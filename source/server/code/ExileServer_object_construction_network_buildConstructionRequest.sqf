@@ -1,4 +1,6 @@
 /**
+ * ExileServer_object_construction_network_buildConstructionRequest
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -7,57 +9,75 @@
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/.
  */
  
-private["_sessionID","_paramaters","_objectClassName","_objectPosition","_playerObject","_maxRange","_no","_flags","_range","_buildRights","_object"];
+private["_sessionID","_parameters","_objectClassName","_objectPosition","_playerObject","_constructionConfig","_canBuildHereResult","_object"];
 _sessionID = _this select 0;
-_paramaters = _this select 1;
-_objectClassName = _paramaters select 0;
-_objectPosition = _paramaters select 1;
+_parameters = _this select 1;
+_objectClassName = _parameters select 0;
+_objectPosition = _parameters select 1;
 try
 {
 	_playerObject = _sessionID call ExileServer_system_session_getPlayerObject;
-	_maxRange = getArray(missionConfigFile >> "CfgTerritories" >> "prices");
-	_maxRange = (_maxRange select ((count _maxRange) -1)) select 1;
-	_no_need_for_Terriotry = getArray(missionConfigFile >> "CfgTerritories" >> "noNeedForTerritory");
-	if!(_objectClassName in _no_need_for_Terriotry)then
+	if (isNull _playerObject) then 
 	{
-		_flags = nearestObjects [_playerObject,["Exile_Construction_Flag_Static"],_maxRange];
-		if!(_flags isEqualTo [])then
+		throw "Player object is null!";
+	};
+	_constructionConfig = ("getText(_x >> 'previewObject') == _objectClassName" configClasses(configFile >> "CfgConstruction")) select 0;
+	_canBuildHereResult = [configName _constructionConfig, (ASLtoAGL (ATLtoASL _objectPosition)), getPlayerUID _playerObject] call ExileClient_util_world_canBuildHere;
+	switch (_canBuildHereResult) do
+	{
+		case 1:
 		{
-			_flags = _flags select 0;
-			_range = _flags getVariable ["ExileTerritorySize",0];
-			if(_range < (_playerObject distance2D _flags))then
-			{
-				throw "Build a territory first!"
-			};
-			_buildRights = _flags getVariable ["ExileTerritoryBuildRights",[]];
-			if!((getPlayerUID _playerObject) in _buildRights)then
-			{
-				throw "No territory access!"
-			};
-		}
-		else
+			throw "You are not in your territory.";
+		};
+		case 11:
 		{
-			throw "Build a territory first!"
+			throw "You are too close to a concrete mixer.";
+		};
+		case 10:
+		{
+			throw "Building is blocked here.";
+		};
+		case 2:
+		{
+			throw "You are inside enemy territory.";
+		};
+		case 8:
+		{
+			throw "You are in a contaminated zone.";
+		};
+		case 3:
+		{
+			throw "This cannot be placed on roads.";
+		};
+		case 5:
+		{
+			throw "You are too close to a spawn zone.";
+		};
+		case 4:
+		{
+			throw "You are too close to traders.";
+		};
+		case 6:
+		{
+			throw "Maximum number of objects reached.";
+		};
+		case 7:
+		{
+			throw "This snap location is already being used.";
 		};
 	};
 	_object = createVehicle[_objectClassName, _objectPosition, [], 0, "CAN_COLLIDE"];
-	_object setPos _objectPosition;
+	_object setPosATL _objectPosition;
 	_object setVariable ["BIS_enableRandomization", false];
+	_object setOwner (owner _playerObject);
 	_object enableSimulationGlobal false;
-	_object setVariable ["ExileOwnerUID",getPlayerUID _playerObject];
-	if(!isNull _playerObject)then
-	{
-		ExileServerOwnershipSwapQueue pushBack [_object,_playerObject];
-		[_sessionID,"constructionResponse",[netid _object]] call ExileServer_system_network_send_to;
-	}
-	else
-	{
-		deleteVehicle _object;
-		"Construction request aborted player is null!" call ExileServer_util_log;
-	};
+	_object setVariable ["ExileOwnerUID", getPlayerUID _playerObject];
+	_playerObject setVariable ["ExileConstructionObject", _object];
+	[_object, _playerObject] call ExileServer_system_swapOwnershipQueue_add;
+	[_sessionID, "constructionResponse", [netid _object]] call ExileServer_system_network_send_to;
 }
 catch
 {
-	[_sessionID,"notificationRequest",["Whoops",[_exception]]] call ExileServer_system_network_send_to;
+	[_sessionID, "toastRequest", ["ErrorTitleAndText", ["Construction aborted!", _exception]]] call ExileServer_system_network_send_to;
 };
 true

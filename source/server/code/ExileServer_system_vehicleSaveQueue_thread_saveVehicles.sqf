@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_vehicleSaveQueue_thread_saveVehicles
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -25,7 +27,7 @@ private["_vehicleObject","_removeFromQueue"];
 			}
 			else
 			{
-				if(isNumber(configFile >> "CfgVehicles" >> typeOf _vehicleObject >> "ExileIsDoor"))then
+				if(isNumber(configFile >> "CfgVehicles" >> typeOf _vehicleObject >> "exileIsDoor"))then
 				{
 					_vehicleObject call ExileServer_object_construction_database_lockUpdate;
 				}

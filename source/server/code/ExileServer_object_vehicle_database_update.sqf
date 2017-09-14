@@ -1,4 +1,6 @@
 /**
+ * ExileServer_object_vehicle_database_update
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -15,12 +17,15 @@ if (_vehicleID > -1) then
 	_position = getPosATL _vehicleObject;
 	_vectorDirection = vectorDir _vehicleObject;
 	_vectorUp = vectorUp _vehicleObject;
-	_availableHitpoints = _vehicleObject call ExileClient_util_vehicle_getHitPoints;
+	_availableHitpoints = getAllHitPointsDamage _vehicleObject;
 	_vehicleHitpoints = [];
+	if!(_availableHitpoints isEqualTo [])then
 	{
-		_vehicleHitpoints pushBack [_x ,_vehicleObject getHitPointDamage _x];
-	}
-	forEach _availableHitpoints;
+		{
+			_vehicleHitpoints pushBack [_x ,_vehicleObject getHitPointDamage _x];
+		}
+		forEach (_availableHitpoints select 0);
+	};
 	_data =
 	[
 		_vehicleObject getVariable ["ExileIsLocked",-1],
@@ -40,6 +45,7 @@ if (_vehicleID > -1) then
 		magazinesAmmoCargo _vehicleObject,
 		weaponsItemsCargo _vehicleObject,
 		_vehicleObject call ExileServer_util_getObjectContainerCargo,
+		_vehicleObject getVariable ["ExileMoney", 0],
 		_vehicleID 
 	];
 	_extDB2Message = ["updateVehicle", _data] call ExileServer_util_extDB2_createMessage;

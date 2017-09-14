@@ -1,4 +1,6 @@
 /**
+ * ExileServer_world_loadAllDatabaseContainers
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -12,6 +14,8 @@ private["_continueLoading","_page","_pageSize","_containerIDs","_numberOfContain
 _continueLoading = true;
 _page = 0;
 _pageSize = 100;
+ExileAbandondedSafes = [];
+ExileContainerCargo = [];
 while {_continueLoading} do 
 {
 	_containerIDs = format ["loadContainerIdPage:%1:%2", _page * _pageSize, _pageSize] call ExileServer_system_database_query_selectFull;

@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_simulationMonitor_initialize
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -8,5 +10,4 @@
  */
  
 ExileSimulationMonitoredVehicles = [];
-[15, ExileServer_system_simulationMonitor_thread_toggleSimulation, [], true] call ExileServer_system_thread_addTask;
 true

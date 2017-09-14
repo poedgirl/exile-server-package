@@ -1,4 +1,6 @@
 /**
+ * ExileServer_object_vehicle_remove
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -12,7 +14,7 @@ _vehicleObject = _this;
 if (_vehicleObject getVariable ["ExileIsPersistent", false]) then 
 {
 	_vehicleObject call ExileServer_object_vehicle_database_delete;
+	_vehicleObject call ExileServer_system_vehicleSaveQueue_removeVehicle;
 };
-_vehicleObject call ExileServer_system_vehicleSaveQueue_removeVehicle;
 _vehicleObject call ExileServer_system_simulationMonitor_removeVehicle;
 true

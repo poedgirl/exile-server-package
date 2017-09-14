@@ -1,4 +1,6 @@
 /**
+ * ExileServer_object_player_sendStatsUpdate
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -11,7 +13,6 @@
 	_this, 
 	"updateStatsRequest", 
 	[
-		str (_this getVariable ["ExileMoney", 0]),
 		str (_this getVariable ["ExileScore", 0]),
 		_this getVariable ["ExileKills", 0],
 		_this getVariable ["ExileDeaths", 0]

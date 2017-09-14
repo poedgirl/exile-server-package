@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_process_preInit
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -11,19 +13,18 @@ private["_MySql"];
 "Server is loading..." call ExileServer_util_log;
 call ExileServer_system_rcon_initialize;
 finishMissionInit;
-ExileSessions = []; 
-ExileGraveyardGroup = createGroup independent;
-Independent setFriend [sideEnemy, 1];
+ExileSessionIDs = [];
+ExileServerGraveyardGroup = grpNull;
+ExileServerBreachingCharges = [];
+ExileServerDeadAnimals = [];
+independent setFriend [sideEnemy, 1];
+call ExileServer_system_process_noobFilter;
 _MySql_connection = [] call ExileServer_system_database_connect;
-if !(_MySql_connection) exitWith
+call ExileServer_system_network_setupEventHandlers;
+if !(getRemoteSensorsDisabled) then
 {
-	"extDB2" callExtension "9:SHUTDOWN";
-	false
+	disableRemoteSensors true;
 };
-addMissionEventHandler ["HandleDisconnect", { _this call ExileServer_system_network_event_onHandleDisconnect; }];
-onPlayerConnected {[_uid, _name] call ExileServer_system_network_event_onPlayerConnected};
-onPlayerDisconnected {[_uid, _name] call ExileServer_system_network_event_onPlayerDisconnected};
-PublicServerFPS = 0;
-PublicHiveIsLoaded = false; 
-PublicHiveVersion = getText(configFile >> "CfgMods" >> "Exile" >> "version");
-publicVariable "PublicHiveVersion";
+PublicServerIsLoaded = false; 
+PublicServerVersion = getText(configFile >> "CfgMods" >> "Exile" >> "version");
+publicVariable "PublicServerVersion";

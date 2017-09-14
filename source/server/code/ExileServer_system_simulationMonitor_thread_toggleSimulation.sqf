@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_simulationMonitor_thread_toggleSimulation
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -24,7 +26,7 @@ private["_vehicle","_simulationShouldBeEnabled","_position"];
 		}
 		else 
 		{
-			if ([_position, 250] call ExileServer_util_position_isPlayerNearby) then
+			if ([_position, 250] call ExileClient_util_world_isAlivePlayerInRange) then
 			{
 				_simulationShouldBeEnabled = true;
 			};

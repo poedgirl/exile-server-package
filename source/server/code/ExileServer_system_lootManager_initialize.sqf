@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_lootManager_initialize
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -7,7 +9,18 @@
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/.
  */
  
+private["_lootTableName","_lootTable","_itemGroupName","_items"];
 ExileServerBuildingNetIdsWithLoot = [];
-[5 * 60, ExileServer_system_lootManager_thread_despawnLoot, [], true] call ExileServer_system_thread_addTask;
-[30, ExileServer_system_lootManager_thread_spawnLoot, [], true] call ExileServer_system_thread_addTask;
+{
+	_lootTableName = configName _x;
+	_lootTable = getArray (configFile >> "CfgExileLoot" >> "LootTables" >> _lootTableName);
+	missionNamespace setVariable ["ExileCachedLootTable" + _lootTableName, _lootTable];
+}
+forEach (configProperties [configFile >> "CfgExileLoot" >> "LootTables"]);
+{
+	_itemGroupName = configName _x;
+	_items = getArray (configFile >> "CfgExileLoot" >> "ItemGroups" >> _itemGroupName);
+	missionNamespace setVariable ["ExileCachedLootItemGroup" + _itemGroupName, _items];
+}
+forEach (configProperties [configFile >> "CfgExileLoot" >> "ItemGroups"]);
 true

@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_simulationMonitor_addVehicle
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -14,7 +16,7 @@ if !(isNull _vehicle) then
 	if !(_vehicle getVariable["ExileIsSimulationMonitored", false]) then
 	{
 		_vehicle setVariable ["ExileIsSimulationMonitored", true];
-		ExileSimulationMonitoredVehicles pushBack _vehicle;
+		_vehicle enableDynamicSimulation true;
 	};
 };
 true

@@ -1,4 +1,6 @@
 /**
+ * ExileServer_object_vehicle_event_onGetIn
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -7,13 +9,10 @@
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/.
  */
  
-private["_vehicleObject","_unitObject"];
+private["_vehicleObject"];
 _vehicleObject = _this select 0;
-if (isPlayer _unitObject) then
+if !(simulationEnabled _vehicleObject) then 
 {
-	if (_vehicleObject getVariable ["ExileIsPersistent", false]) then
-	{
-		[_unitObject, "advancedHintRequest", ["SpawnZoneVehicles"]] call ExileServer_system_network_send_to;
-	};
+	_vehicleObject enableSimulationGlobal true;
 };
 true

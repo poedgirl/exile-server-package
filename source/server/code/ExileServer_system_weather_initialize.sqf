@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_weather_initialize
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -20,7 +22,7 @@ else
 {
 	if(_useRealTime isEqualTo 1)then
 	{
-		setDate ExileServerRealTime;
+		setDate ExileServerStartTime;
 	};
 };
 forceWeatherChange;

@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_rcon_setupEvents
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -16,7 +18,7 @@ ExileServerUseAutokick = getNumber (configFile >> "CfgSettings" >> "RCON" >> "us
 _useRestartMessages = getNumber (configFile >> "CfgSettings" >> "RCON" >> "useRestartMessages");
 if(_useRestartMessages isEqualTo 1)then
 {
-	ExileServerRestartMessages = getArray(configFile >> "CfgSettings" >> "RCON" >> "restartWarrningTime");
+	ExileServerRestartMessages = getArray(configFile >> "CfgSettings" >> "RCON" >> "restartWarningTime");
 }
 else
 {
@@ -27,7 +29,6 @@ else
 	ExileServer_system_rcon_thread_check,
 	[
 		ExileServerRestartTime,
-		ExileServerRestartMessages,
 		ExileServerUseAutokick,
 		ExileServerKickTime,
 		ExileServerLockTime

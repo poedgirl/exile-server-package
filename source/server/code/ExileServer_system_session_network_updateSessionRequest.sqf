@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_session_network_updateSessionRequest
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -11,24 +13,13 @@ private["_sessionID","_parameters","_netID","_player"];
 _sessionID = _this select 0;
 _parameters = _this select 1;
 _netID = _parameters select 0;
-try 
+_player = objectFromNetId _netID;
+if (isNull _player) then 
 {
-	_player = objectFromNetId _netID;
-	if (isNull _player) then
-	{
-		throw "Cannot update session for unknown network ID!";
-	};
-	{
-		if ( (_x select 0) == _sessionID ) exitWith
-		{
-			format["Session ID for '%1' has been updated to '%2'!", (name _player), _sessionID] call ExileServer_util_log;
-			ExileSessions set [_forEachIndex, [_sessionID, _player] ];
-		};
-	}
-	forEach ExileSessions;
+	"Cannot update session for unknown network ID!" call ExileServer_util_log;
 }
-catch
+else 
 {
-	_exception call ExileServer_util_log;
+	[_sessionID, _player] call ExileServer_system_session_update;
 };
 true

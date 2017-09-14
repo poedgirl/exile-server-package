@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_rcon_event_ready
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -13,6 +15,6 @@ if (ExileServerIsLocked) then
 	"Rcon events initialized!" call ExileServer_util_log;
 	"#unlock" call ExileServer_system_rcon_event_sendCommand;
 	ExileServerIsLocked = false;
-	"Server unlocked and acception players. Have fun! :)" call ExileServer_util_log;
+	"Server unlocked and accepting players. Have fun! :)" call ExileServer_util_log;
 };
 true

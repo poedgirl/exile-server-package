@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_swapOwnershipQueue_initialize
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -8,5 +10,5 @@
  */
  
 ExileServerOwnershipSwapQueue = [];
-[1, ExileServer_system_swapOwnershipQueue_thread_dispatchQueue, [], true] call ExileServer_system_thread_addTask;
+[5, ExileServer_system_swapOwnershipQueue_thread_dispatchQueue, [], true] call ExileServer_system_thread_addTask;
 true

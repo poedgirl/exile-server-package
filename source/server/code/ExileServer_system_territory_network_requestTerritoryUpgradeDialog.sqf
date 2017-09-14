@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_territory_network_requestTerritoryUpgradeDialog
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -20,6 +22,6 @@ if((getPlayerUID _playerObject) in _moderators)then
 }
 else
 {
-	[_sessionID,"notificationRequest",["Whoops",["Cant access upgrade for this territory!"]]] call ExileServer_system_network_send_to;
+	[_sessionID, "toastRequest", ["ErrorTitleAndText", ["Failed to upgrade!", "You need to have moderator rights."]]] call ExileServer_system_network_send_to;
 };
 true

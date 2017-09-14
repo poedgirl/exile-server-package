@@ -1,4 +1,6 @@
 /**
+ * ExileServer_system_territory_network_addToTerritoryRequest
+ *
  * Exile Mod
  * www.exilemod.com
  * © 2015 Exile Mod Team
@@ -20,9 +22,9 @@ try
 		throw "Player (owner or moderator) object not found.";
 	};
 	_flagObject = objectFromNetId _flagNetID;
-	if (isNull _flagObject) then 
+	if (isNull _flagObject) then
 	{
-		throw "Flag object not found.";
+		throw "Flag object not found."; 
 	};
 	_playerToBeAddedObject = objectFromNetId _playerToBeAddedNetID;
 	if (isNull _playerToBeAddedObject) then
@@ -53,11 +55,11 @@ try
 	_currentBuildRights pushBack _playerToBeAddedUID;
 	_flagObject setVariable ["ExileTerritoryBuildRights", _currentBuildRights, true];
 	format["updateTerritoryBuildRights:%1:%2", _currentBuildRights, _territoryID] call ExileServer_system_database_query_fireAndForget;
-	[_playerToBeAddedObject, "notificationRequest", ["AddedToTerritoryMessage", [_territoryName]]] call ExileServer_system_network_send_to;
+	[_playerToBeAddedObject, "toastRequest", ["InfoTitleOnly", [ format ["You have been added to territory '%1'!", _territoryName] ]]] call ExileServer_system_network_send_to;
 }
 catch 
 {
-	[_sessionID, "notificationRequest", ["Whoops", [_exception]]] call ExileServer_system_network_send_to;
+	[_sessionID, "toastRequest", ["ErrorTitleAndText", ["Failed to add!", _exception]]] call ExileServer_system_network_send_to;
 	_exception call ExileServer_util_log;
 };
 true
